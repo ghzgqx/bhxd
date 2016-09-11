@@ -1,20 +1,34 @@
-echo "Welcome to use BHXD - Bilibili History XML Downloader"
-echo "Usage: bhxd [aid] [start timestamp] [end timestamp] [dir]"
+#!/bin/bash
+trap 'echo "Exit" && exit 7' INT
+echo "BHXD - Bilibili History XML Downloader V1.1.0 Build20160911 "
+echo "Usage: bhxd [aid] [start date] [end date] [dir]"
 echo "This program required w3m !"
-echo "aid $1"
-echo "start timestamp $2"
-echo "end timestamp $3"
+st=`date -d "$2" +%s`
+et=`date -d "$3" +%s`
 aid=$1
-st=$2
-et=$3
 dir=$4
+echo "Start [$st] End [$et] Dir [$dir]"
 i=$st
+all=$(((($et-$st)/86400)+1))
+blk1="                              "
+str1="------------------------------"
+pos=1
 mkdir $dir
+sleep 3
 while (($i<=$et))
-do 
+do
+fns=$(((($i-$st)/86400)+1))
+fnspct=$((($fns*30)/$all))
+rmnpct=$((30-$fnspct))
+str2=${str1:pos:fnspct}
+blk2=${blk1:pos:rmnpct}
+clear
+echo "BHXD - Bilibili History XML Downloader V1.1.0 Build20160911"
+echo " $fns / $all [$i.xml] "
+echo "[$str2$blk2]"
 w3m http://comment.bilibili.com/dmroll,$i,$aid >> $dir/$i.xml
-echo "$i.xml done"
 i=$(($i+86400))
 done
-echo "Done!"
+echo "Done"
 
+ 
