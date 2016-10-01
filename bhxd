@@ -1,11 +1,19 @@
 #!/bin/bash
 trap 'echo "Exit" && exit 7' INT
 echo "BHXD - Bilibili History XML Downloader V1.1.0 Build20160911 "
-echo "Usage: bhxd [aid] [start date] [end date] [dir]"
+echo "Usage: bhxd [cid] [start date] [end date] [dir]"
 echo "This program required w3m !"
+if [ "$4" = "" ]; then
+echo "Command Error! No output dir.  Exit."
+exit 7
+fi
 st=`date -d "$2" +%s`
 et=`date -d "$3" +%s`
-aid=$1
+if [ $(($st)) -gt $(($et)) ]; then
+echo "Command Error! Start date is bigger than end date. Exit."
+exit 7
+fi
+cid=$1
 dir=$4
 echo "Start [$st] End [$et] Dir [$dir]"
 i=$st
@@ -14,7 +22,9 @@ blk1="                              "
 str1="------------------------------"
 pos=1
 mkdir $dir
-sleep 3
+echo "Please Wait. Download will start in 10 seconds."
+echo "If anything wrong, press Ctrl+C to stop this program."
+sleep 10
 while (($i<=$et))
 do
 fns=$(((($i-$st)/86400)+1))
@@ -24,9 +34,10 @@ str2=${str1:pos:fnspct}
 blk2=${blk1:pos:rmnpct}
 clear
 echo "BHXD - Bilibili History XML Downloader V1.1.0 Build20160911"
-echo " $fns / $all [$i.xml] "
+echo " $fns / $all / \>[$i.xml] / [$cid] "
 echo "[$str2$blk2]"
-w3m http://comment.bilibili.com/dmroll,$i,$aid >> $dir/$i.xml
+w3m http://comment.bilibili.com/dmroll,$i,$cid >> $dir/$i.xml
+echo "."
 i=$(($i+86400))
 done
 echo "Done"
