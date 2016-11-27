@@ -1,6 +1,5 @@
-#!/bin/bash
 trap 'echo "Exit" && exit 7' INT
-echo "BHXD - Bilibili History XML Downloader V1.1.0 Build20160911 "
+echo "BHXD - Bilibili History XML Downloader V1.2.0 Build20161127 "
 echo "Usage: bhxd [cid] [start date] [end date] [dir]"
 echo "This program required w3m !"
 if [ "$4" = "" ]; then
@@ -22,7 +21,7 @@ blk1="                              "
 str1="------------------------------"
 pos=1
 mkdir $dir
-echo "Please Wait. Download will start in 10 seconds."
+echo "Please Wait. Download will start in 5 seconds."
 echo "If anything wrong, press Ctrl+C to stop this program."
 sleep 10
 while (($i<=$et))
@@ -42,4 +41,3 @@ i=$(($i+86400))
 done
 echo "Done"
 
- 
